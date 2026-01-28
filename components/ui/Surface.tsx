@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, HTMLAttributes } from "react";
 
 function cn(...classes: (string | undefined | false)[]) {
   return classes.filter(Boolean).join(" ");
@@ -6,17 +6,18 @@ function cn(...classes: (string | undefined | false)[]) {
 
 type Variant = "glass" | "brand" | "accent" | "solid";
 
+type SurfaceProps = HTMLAttributes<HTMLDivElement> & {
+  children: ReactNode;
+  variant?: Variant;
+};
+
 export default function Surface({
   children,
   className,
   variant = "glass",
-}: {
-  children: ReactNode;
-  className?: string;
-  variant?: Variant;
-}) {
+  ...props
+}: SurfaceProps) {
   const variants: Record<Variant, string> = {
-    // Uses your globals.css utilities :contentReference[oaicite:3]{index=3}
     glass: "glass rounded-3xl shadow-sm",
     brand: "brand-surface rounded-3xl shadow-sm",
     accent: "glass-accent rounded-3xl shadow-sm",
@@ -24,5 +25,9 @@ export default function Surface({
       "rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface-strong)] shadow-sm",
   };
 
-  return <div className={cn(variants[variant], className)}>{children}</div>;
+  return (
+    <div {...props} className={cn(variants[variant], className)}>
+      {children}
+    </div>
+  );
 }
