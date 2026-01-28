@@ -1,26 +1,233 @@
 @import "tailwindcss";
 
 :root {
+  /* -------------------------
+     Base (light)
+     ------------------------- */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0f172a; /* slate-900-ish */
+
+  /* -------------------------
+     Brand palette
+     ------------------------- */
+  --primary: #4f6ef7; /* Soft Indigo */
+  --secondary: #2cb1a6; /* Teal Green */
+  --accent: #f4b740; /* Soft Amber (limited but visible) */
+
+  /* -------------------------
+     Brand tints (STRONGER so colors actually show)
+     ------------------------- */
+  --primary-tint: rgba(79, 110, 247, 0.18);
+  --secondary-tint: rgba(44, 177, 166, 0.18);
+  --accent-tint: rgba(244, 183, 64, 0.18);
+
+  /* -------------------------
+     Surfaces / glass / borders
+     (less "white", more depth)
+     ------------------------- */
+  --surface: rgba(255, 255, 255, 0.86);
+  --surface-strong: rgba(255, 255, 255, 0.96);
+  --border: rgba(15, 23, 42, 0.14);
+  --muted: rgba(15, 23, 42, 0.62);
+
+  /* Focus ring uses primary */
+  --ring: rgba(79, 110, 247, 0.48);
+
+  /* Selection uses primary */
+  --selection: rgba(79, 110, 247, 0.26);
+
+  /* Links (only used by .link helper) */
+  --link: var(--primary);
+  --link-hover: rgba(79, 110, 247, 0.92);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+
+  --color-primary-tint: var(--primary-tint);
+  --color-secondary-tint: var(--secondary-tint);
+  --color-accent-tint: var(--accent-tint);
+
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-playfair);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #e5e7eb;
+
+    --surface: rgba(17, 24, 39, 0.68);
+    --surface-strong: rgba(17, 24, 39, 0.84);
+    --border: rgba(229, 231, 235, 0.16);
+    --muted: rgba(229, 231, 235, 0.74);
+
+    --primary-tint: rgba(79, 110, 247, 0.22);
+    --secondary-tint: rgba(44, 177, 166, 0.20);
+    --accent-tint: rgba(244, 183, 64, 0.18);
+
+    --ring: rgba(79, 110, 247, 0.62);
+    --selection: rgba(79, 110, 247, 0.30);
+
+    --link: var(--primary);
+    --link-hover: rgba(79, 110, 247, 0.94);
   }
 }
 
+html {
+  text-rendering: geometricPrecision;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Form controls match palette */
+:root {
+  accent-color: var(--primary);
+}
+
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: transparent; /* layout background handles it */
+  font-family: var(--font-sans), system-ui, -apple-system, Segoe UI, Roboto,
+    Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Selection */
+::selection {
+  background: var(--selection);
+}
+
+/* Kill browser default blue/purple links */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:visited {
+  color: inherit;
+}
+
+/* Optional content link style */
+.link {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.link:hover {
+  color: var(--link-hover);
+}
+
+/* -------------------------
+   Reusable surfaces (use these to inject brand color fast)
+   ------------------------- */
+.glass {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+}
+
+.glass-brand {
+  background: linear-gradient(
+      135deg,
+      rgba(79, 110, 247, 0.16),
+      rgba(44, 177, 166, 0.14)
+    ),
+    var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+}
+
+.glass-accent {
+  background: linear-gradient(
+      135deg,
+      rgba(244, 183, 64, 0.18),
+      rgba(79, 110, 247, 0.12)
+    ),
+    var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+}
+
+/* Stronger brand panels (use for HERO / major sections) */
+.brand-surface {
+  background: linear-gradient(
+      135deg,
+      rgba(79, 110, 247, 0.20),
+      rgba(44, 177, 166, 0.16)
+    ),
+    var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+}
+
+.brand-surface-soft {
+  background: linear-gradient(
+      135deg,
+      rgba(79, 110, 247, 0.14),
+      rgba(44, 177, 166, 0.12)
+    ),
+    var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+}
+
+/* Amber highlight pill (use sparingly but visibly) */
+.accent-pill {
+  background: rgba(244, 183, 64, 0.20);
+  border: 1px solid rgba(244, 183, 64, 0.34);
+}
+
+/* =========================
+   FAQ accordion animation
+   ========================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out;
+}
+/* Consistent scroll offset for anchor jumps (navbar is sticky) */
+html {
+  scroll-padding-top: 92px;
+}
+
+/* Better default readability across pages */
+p {
+  text-wrap: pretty;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+/* Make focus states feel intentional (premium polish) */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ring);
+  border-radius: 12px;
+}
+
+/* Optional: nicer horizontal rule defaults */
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
 }

@@ -1,0 +1,17 @@
+{
+  "common": {
+    "apply": "Apply",
+    "viewPrograms": "View programs",
+    "readMethodology": "Read the methodology"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Language • Culture • Communication",
+      "titleLine1": "Learn Arabic",
+      "titleHighlight": "for real life & real work",
+      "subtitle": "A speaking-first experience for professionals and serious learners.",
+      "ctaPrimary": "Apply now",
+      "ctaSecondary": "Explore programs"
+    }
+  }
+}
