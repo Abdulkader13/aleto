@@ -294,13 +294,16 @@ export default function ApplyPage({
                 />
               </div>
 
-              <Button
-                type="submit"
-                className="w-full py-4 text-base md:text-lg"
-                disabled={status === "submitting"}
-              >
-                {status === "submitting" ? "Submitting..." : "Submit application"}
-              </Button>
+<Button
+  type="submit"
+  className={`w-full py-4 text-base md:text-lg ${
+    status === "submitting" ? "pointer-events-none opacity-60" : ""
+  }`}
+  aria-disabled={status === "submitting"}
+>
+  {status === "submitting" ? "Submitting..." : "Submit application"}
+</Button>
+
 
               {status !== "idle" && (
                 <p
