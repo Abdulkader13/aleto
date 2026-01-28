@@ -2,21 +2,18 @@ import type { ReactNode } from "react";
 
 const rtlLocales = ["ar"];
 
-export default function LocaleLayout({
+export default async function LocaleLayout({
   children,
   params,
 }: {
   children: ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
-  const isRTL = rtlLocales.includes(params.locale);
+  const { locale } = await params;
+  const isRTL = rtlLocales.includes(locale);
 
   return (
-    <div
-      lang={params.locale}
-      dir={isRTL ? "rtl" : "ltr"}
-      className="contents"
-    >
+    <div lang={locale} dir={isRTL ? "rtl" : "ltr"} className="contents">
       {children}
     </div>
   );
