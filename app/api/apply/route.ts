@@ -71,35 +71,35 @@ export async function POST(req: Request) {
     }
 
     // 2) Save to Google Sheets (Apps Script Web App)
-    const sheetsUrl = process.env.GOOGLE_SHEETS_WEBAPP_URL;
-    const sheetsToken = process.env.GOOGLE_SHEETS_TOKEN;
+// 2) Save to Google Sheets (Apps Script Web App)
+const sheetsUrl = process.env.GOOGLE_SHEETS_WEBAPP_URL;
+const sheetsToken = process.env.GOOGLE_SHEETS_TOKEN;
 
-    if (sheetsUrl && sheetsToken) {
-      // Send best-effort: if Sheets fails, we still succeed because email was sent
-      try {
-        const res = await fetch(`${sheetsUrl}?token=${encodeURIComponent(sheetsToken)}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            fullName,
-            email,
-            level,
-            format,
-            goal,
-            details,
-          }),
-        });
+if (!sheetsUrl || !sheetsToken) {
+  return NextResponse.json(
+    { error: "Sheets env vars missing (GOOGLE_SHEETS_WEBAPP_URL / GOOGLE_SHEETS_TOKEN)." },
+    { status: 500 }
+  );
+}
 
-        if (!res.ok) {
-          console.warn("Google Sheets save failed:", res.status, await res.text());
-        }
-      } catch (e) {
-        console.warn("Google Sheets request error:", e);
-      }
-    } else {
-      // Not fatal
-      console.warn("Sheets env vars missing; skipping Sheets save.");
-    }
+const res = await fetch(
+  `${sheetsUrl}?token=${encodeURIComponent(sheetsToken)}`,
+  {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ fullName, email, level, format, goal, details }),
+  }
+);
+
+const text = await res.text();
+
+if (!res.ok) {
+  return NextResponse.json(
+    { error: `Google Sheets failed: ${res.status} ${text}` },
+    { status: 502 }
+  );
+}
+
 
     return NextResponse.json({ ok: true });
   } catch (e) {
