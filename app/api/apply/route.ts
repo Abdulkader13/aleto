@@ -101,7 +101,7 @@ if (!res.ok) {
 }
 
 
-    return NextResponse.json({ ok: true });
+return NextResponse.json({ error: "TEST_ERROR" }, { status: 500 });
   } catch (e) {
     return NextResponse.json(
       { error: "Invalid request body." },
