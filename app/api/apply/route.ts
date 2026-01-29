@@ -70,7 +70,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // 2) Save to Google Sheets (Apps Script Web App)
 // 2) Save to Google Sheets (Apps Script Web App)
 const sheetsUrl = process.env.GOOGLE_SHEETS_WEBAPP_URL;
 const sheetsToken = process.env.GOOGLE_SHEETS_TOKEN;
@@ -82,26 +81,28 @@ if (!sheetsUrl || !sheetsToken) {
   );
 }
 
-const res = await fetch(
+const sheetsRes = await fetch(
   `${sheetsUrl}?token=${encodeURIComponent(sheetsToken)}`,
   {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ fullName, email, level, format, goal, details }),
+    redirect: "follow",
   }
 );
 
-const text = await res.text();
+const sheetsText = await sheetsRes.text();
 
-if (!res.ok) {
+if (!sheetsRes.ok) {
   return NextResponse.json(
-    { error: `Google Sheets failed: ${res.status} ${text}` },
+    { error: `Google Sheets failed: ${sheetsRes.status} ${sheetsText}` },
     { status: 502 }
   );
 }
 
 
-return NextResponse.json({ error: "TEST_ERROR" }, { status: 500 });
+
+return NextResponse.json({ ok: true });
   } catch (e) {
     return NextResponse.json(
       { error: "Invalid request body." },
