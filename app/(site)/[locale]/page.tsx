@@ -33,7 +33,7 @@ const testimonials = [
   },
   {
     quote:
-      "I’ve been studying with Abdul for a year. We have lessons twice a week: one focused on speaking, the other on grammar. At first, I thought it might be uncomfortable to study with a non-Russian-speaking teacher. But from the very first lesson, all my fears disappeared. Abdul really helped me start speaking and overcome the language barrier. He also explains grammar in a very clear and understandable way. And most importantly, Abdul is a great conversationalist with a good sense of humor. Lessons with him are easy and interesting.",
+      "Abdul really helped me start speaking and overcome the language barrier. He also explains grammar in a very clear and understandable way. And most importantly, Abdul is a great conversationalist with a good sense of humor. Lessons with him are easy and interesting.",
     name: "Nikita, Serbia, A1 → B1",
     meta: "Focus: daily communication",
   },

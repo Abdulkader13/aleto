@@ -1,3 +1,5 @@
+import { createClient } from "@supabase/supabase-js";
+
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
@@ -96,6 +98,35 @@ const sheetsText = await sheetsRes.text();
 if (!sheetsRes.ok) {
   return NextResponse.json(
     { error: `Google Sheets failed: ${sheetsRes.status} ${sheetsText}` },
+    { status: 502 }
+  );
+}
+
+// 3) Save to Supabase
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl || !supabaseServiceRoleKey) {
+  return NextResponse.json(
+    { error: "Supabase env vars missing (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY)." },
+    { status: 500 }
+  );
+}
+
+const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
+
+const { error: dbError } = await supabase.from("applications").insert({
+  full_name: fullName,
+  email,
+  level,
+  format,
+  goal,
+  details,
+});
+
+if (dbError) {
+  return NextResponse.json(
+    { error: `Supabase insert failed: ${dbError.message}` },
     { status: 502 }
   );
 }
