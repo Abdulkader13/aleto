@@ -1,7 +1,6 @@
-import { createClient } from "@supabase/supabase-js";
-
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { createClient } from "@supabase/supabase-js";
 
 function isEmail(s: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
@@ -19,17 +18,14 @@ export async function POST(req: Request) {
     const details = String(body.details || "").trim();
 
     if (!fullName || !email || !level || !format || !goal) {
-      return NextResponse.json(
-        { error: "Missing required fields." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
     }
 
     if (!isEmail(email)) {
       return NextResponse.json({ error: "Invalid email." }, { status: 400 });
     }
 
-    // 1) Send email via Resend
+    // 1) Email via Resend
     const resendKey = process.env.RESEND_API_KEY;
     const toEmail = process.env.APPLY_TO_EMAIL;
     const fromEmail =
@@ -62,7 +58,7 @@ export async function POST(req: Request) {
       to: toEmail,
       subject: `New Aleto application — ${fullName} (${level}, ${format})`,
       text: emailText,
-      replyTo: email, // so you can reply directly to the applicant
+      replyTo: email,
     });
 
     if (resendError) {
@@ -72,72 +68,37 @@ export async function POST(req: Request) {
       );
     }
 
-// 2) Save to Google Sheets (Apps Script Web App)
-const sheetsUrl = process.env.GOOGLE_SHEETS_WEBAPP_URL;
-const sheetsToken = process.env.GOOGLE_SHEETS_TOKEN;
+    // 2) Save to Supabase
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!sheetsUrl || !sheetsToken) {
-  return NextResponse.json(
-    { error: "Sheets env vars missing (GOOGLE_SHEETS_WEBAPP_URL / GOOGLE_SHEETS_TOKEN)." },
-    { status: 500 }
-  );
-}
+    if (!supabaseUrl || !supabaseServiceRoleKey) {
+      return NextResponse.json(
+        { error: "Supabase env vars missing (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY)." },
+        { status: 500 }
+      );
+    }
 
-const sheetsRes = await fetch(
-  `${sheetsUrl}?token=${encodeURIComponent(sheetsToken)}`,
-  {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ fullName, email, level, format, goal, details }),
-    redirect: "follow",
-  }
-);
+    const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
-const sheetsText = await sheetsRes.text();
+    const { error: dbError } = await supabase.from("applications").insert({
+      full_name: fullName,
+      email,
+      level,
+      format,
+      goal,
+      details,
+    });
 
-if (!sheetsRes.ok) {
-  return NextResponse.json(
-    { error: `Google Sheets failed: ${sheetsRes.status} ${sheetsText}` },
-    { status: 502 }
-  );
-}
+    if (dbError) {
+      return NextResponse.json(
+        { error: `Supabase insert failed: ${dbError.message}` },
+        { status: 502 }
+      );
+    }
 
-// 3) Save to Supabase
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-if (!supabaseUrl || !supabaseServiceRoleKey) {
-  return NextResponse.json(
-    { error: "Supabase env vars missing (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY)." },
-    { status: 500 }
-  );
-}
-
-const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
-
-const { error: dbError } = await supabase.from("applications").insert({
-  full_name: fullName,
-  email,
-  level,
-  format,
-  goal,
-  details,
-});
-
-if (dbError) {
-  return NextResponse.json(
-    { error: `Supabase insert failed: ${dbError.message}` },
-    { status: 502 }
-  );
-}
-
-
-
-return NextResponse.json({ ok: true });
-  } catch (e) {
-    return NextResponse.json(
-      { error: "Invalid request body." },
-      { status: 400 }
-    );
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 }
