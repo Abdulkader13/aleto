@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import type { ReactNode, MouseEventHandler } from "react";
 
 type Variant = "primary" | "secondary" | "accent" | "ghost";
 
@@ -42,13 +42,15 @@ export default function Button({
   className,
   type,
   onClick,
+  disabled = false,
 }: {
   href?: string;
   children: ReactNode;
   variant?: Variant;
   className?: string;
   type?: "button" | "submit" | "reset";
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
 }) {
   const pathname = usePathname();
   const locale = getLocaleFromPath(pathname);
@@ -61,32 +63,41 @@ export default function Button({
     "active:translate-y-[0.5px]";
 
   const styles: Record<Variant, string> = {
-    // Soft Indigo
     primary:
       "text-white bg-[var(--color-primary)] hover:opacity-95 " +
       "shadow-sm shadow-[color:rgba(79,110,247,0.28)]",
 
-    // Teal Green (make it clearly visible across the site)
     secondary:
       "text-white bg-[var(--color-secondary)] hover:opacity-95 " +
       "shadow-sm shadow-[color:rgba(44,177,166,0.28)]",
 
-    // Soft Amber (use sparingly, but when used it should POP)
     accent:
       "text-[var(--color-foreground)] bg-[var(--color-accent)] hover:opacity-95 " +
       "shadow-sm shadow-[color:rgba(244,183,64,0.35)]",
 
-    // Subtle action
     ghost:
       "text-[var(--color-foreground)]/80 " +
       "hover:text-[var(--color-secondary)] " +
       "hover:bg-[var(--color-secondary-tint)]",
   };
 
-  const classes = cn(base, styles[variant], className);
+  const disabledClasses =
+    "opacity-50 cursor-not-allowed pointer-events-none active:translate-y-0";
 
+  const classes = cn(base, styles[variant], disabled && disabledClasses, className);
+
+  // Link button
   if (href) {
     const finalHref = isExternalHref(href) ? href : prefixLocale(locale, href);
+
+    // Next/link doesn't support "disabled". We simulate it.
+    if (disabled) {
+      return (
+        <span aria-disabled="true" className={classes}>
+          {children}
+        </span>
+      );
+    }
 
     return (
       <Link href={finalHref} className={classes}>
@@ -95,8 +106,14 @@ export default function Button({
     );
   }
 
+  // Normal button
   return (
-    <button type={type ?? "button"} onClick={onClick} className={classes}>
+    <button
+      type={type ?? "button"}
+      onClick={onClick}
+      disabled={disabled}
+      className={classes}
+    >
       {children}
     </button>
   );
