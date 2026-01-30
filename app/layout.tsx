@@ -67,18 +67,20 @@ export default function RootLayout({
       <body className="font-inter min-h-screen antialiased bg-[var(--color-background)] text-[var(--color-foreground)] overflow-x-hidden">
         <AppBackground />
 
-        <div className="flex min-h-screen flex-col">
-          <Navbar />
+<div className="min-h-dvh flex flex-col">
+  <Navbar />
 
-          <main id="main" className="flex-grow">
-            {/* Global rhythm: consistent top/bottom padding across all pages */}
-            <Container className="pt-10 md:pt-14 pb-16 md:pb-24">
-              {children}
-            </Container>
-          </main>
+  <main id="main" className="flex-1">
+    <Container className="pt-10 md:pt-14">
+      {children}
+    </Container>
+  </main>
 
-          <Footer />
-        </div>
+  <div className="mt-auto">
+    <Footer />
+  </div>
+</div>
+
       </body>
     </html>
   );

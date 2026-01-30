@@ -1,5 +1,7 @@
 import FadeIn from "@/components/FadeIn";
 import Button from "@/components/Button";
+import { Mail, MessageCircle, Instagram, ShieldCheck } from "lucide-react";
+import { contact } from "@/lib/contact";
 
 import Hero from "@/components/sections/Hero";
 
@@ -160,6 +162,85 @@ export default function AboutPage({
           </div>
         </Surface>
       </FadeIn>
+
+
+
+<section className="pt-10">
+  <div className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] backdrop-blur p-6 md:p-8">
+    <div className="flex items-start justify-between gap-6 flex-col md:flex-row">
+      <div className="space-y-2">
+        <h2 className="text-2xl font-playfair font-bold">Contact</h2>
+        <p className="text-[var(--color-foreground)]/75">
+          Questions about your level, goals, or the right course? Message us and we’ll reply fast.
+        </p>
+      </div>
+
+      <div className="inline-flex items-center gap-2 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-strong)] px-4 py-3 text-sm text-[var(--color-foreground)]/75">
+        <ShieldCheck className="h-4 w-4 text-[var(--color-primary)]" />
+        Typical response time: <span className="text-[var(--color-foreground)]/90 font-medium">24–48 hours</span>
+      </div>
+    </div>
+
+    <div className="mt-6 grid gap-3 sm:grid-cols-3">
+      {/* Email */}
+      <a
+        href={`mailto:${contact.email}`}
+        className="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-strong)]/70 backdrop-blur px-4 py-4 hover:opacity-95 transition"
+      >
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-2xl border border-[var(--color-border)] bg-[color:rgba(79,110,247,0.10)] flex items-center justify-center">
+            <Mail className="h-5 w-5 text-[var(--color-primary)]" />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-[var(--color-foreground)]/90">Email</p>
+            <p className="text-sm text-[var(--color-foreground)]/70">{contact.email}</p>
+          </div>
+        </div>
+      </a>
+
+      {/* WhatsApp */}
+      <a
+        href={contact.whatsapp}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-strong)]/70 backdrop-blur px-4 py-4 hover:opacity-95 transition"
+      >
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-2xl border border-[var(--color-border)] bg-[color:rgba(44,177,166,0.10)] flex items-center justify-center">
+            <MessageCircle className="h-5 w-5 text-[var(--color-secondary)]" />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-[var(--color-foreground)]/90">WhatsApp</p>
+            <p className="text-sm text-[var(--color-foreground)]/70">Chat with us</p>
+          </div>
+        </div>
+      </a>
+
+      {/* Instagram */}
+      <a
+        href={contact.instagram}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-strong)]/70 backdrop-blur px-4 py-4 hover:opacity-95 transition"
+      >
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-2xl border border-[var(--color-border)] bg-[color:rgba(244,183,64,0.14)] flex items-center justify-center">
+            <Instagram className="h-5 w-5 text-[var(--color-accent)]" />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-[var(--color-foreground)]/90">Instagram</p>
+            <p className="text-sm text-[var(--color-foreground)]/70">@aleto</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div className="mt-6 text-sm text-[var(--color-foreground)]/60">
+      Tip: When you message, tell us your current level, goals, and preferred schedule.
+    </div>
+  </div>
+</section>
+
 
       {/* CTA */}
       <FadeIn delay={0.35}>

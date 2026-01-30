@@ -35,48 +35,12 @@ export default function ProgramsPage({
           title="Arabic for Real Life"
           highlight="& Work"
           subtitle="Choose the format that fits your goal: private classes, small-group program, and (later) recorded courses — all speaking-first."
-          primaryCta={{
-            href: "/apply",
-            label: (
-              <>
-                Apply <ArrowRight className="h-4 w-4" />
-              </>
-            ),
-          }}
-          secondaryCta={{
-            href: "/materials",
-            label: "Explore materials",
-          }}
+
           variant="brand"
         />
       </FadeIn>
 
-      {/* FEATURE GRID */}
-      <FadeIn delay={0.12}>
-        <div className="grid gap-6 md:grid-cols-3">
-          <FeatureCard
-            tone="primary"
-            icon={<Target className="h-6 w-6" />}
-            title="Program goal"
-            desc="Speak Arabic naturally and confidently in work, social, and everyday contexts — without memorization-heavy methods."
-          />
-
-          <FeatureCard
-            tone="secondary"
-            icon={<MessageSquare className="h-6 w-6" />}
-            title="How sessions work"
-            desc="Real speaking tasks, guided conversation, and immediate correction. You learn through usage, not theory dumps."
-          />
-
-          <FeatureCard
-            tone="primary"
-            icon={<Layers className="h-6 w-6" />}
-            title="Materials included"
-            desc="Vocabulary lists, short texts, speaking prompts, and structured homework — designed to make speaking automatic."
-          />
-        </div>
-      </FadeIn>
-
+ 
       {/* PROGRAM CARDS */}
       <FadeIn delay={0.22}>
         <Surface className="p-10 md:p-14">
@@ -231,16 +195,7 @@ export default function ProgramsPage({
           }}
         />
 
-        <div className="mt-4 text-center">
-          <Button
-  href="/materials"
-  variant="secondary"
-  className="px-10 py-4 text-base md:text-lg"
->
-  Explore materials
-</Button>
 
-        </div>
       </FadeIn>
     </section>
   );

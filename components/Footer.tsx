@@ -1,9 +1,10 @@
 "use client";
 
+import { contact } from "@/lib/contact";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { Mail, Sparkles, ShieldCheck, ArrowUpRight } from "lucide-react";
+import { Mail, Sparkles, ShieldCheck, ArrowUpRight, Instagram, MessageCircle } from "lucide-react";
 import { cn } from "@/components/ui/cn";
 
 const LOCALES = ["en", "ar", "ru", "fr", "tr"] as const;
@@ -58,11 +59,10 @@ export default function Footer() {
     { href: "/refunds", label: "Refunds" },
   ];
 
-  // keep one source of truth for contact
-  const contactEmail = "aleto@edu.com";
+
 
   return (
-    <footer className="relative mt-16">
+    <footer className="relative overflow-hidden mt-16">
       {/* Background color layer */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(79,110,247,0.14),rgba(44,177,166,0.10),rgba(244,183,64,0.05))]" />
@@ -116,8 +116,8 @@ export default function Footer() {
 {[
   { href: "/", label: "Home" },
   { href: "/programs", label: "Programs" },
-  { href: "/materials", label: "Materials" },   // renamed correctly
-  { href: "/placement", label: "Placement" },   // new page
+  { href: "/materials", label: "Materials" },   
+  { href: "/placement", label: "Placement" },   
   { href: "/faq", label: "FAQ" },
   { href: "/about", label: "About" },
   { href: "/apply", label: "Apply" },
@@ -143,13 +143,39 @@ export default function Footer() {
                 Questions about your level or goals?
               </p>
 
-              <a
-                href={`mailto:${contactEmail}`}
-                className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-primary)] hover:opacity-90 transition"
-              >
-                <Mail className="h-4 w-4" />
-                {contactEmail}
-              </a>
+<div className="space-y-2 pt-1">
+  {/* Email */}
+  <a
+    href={`mailto:${contact.email}`}
+    className="flex items-center gap-2 text-sm font-medium text-[var(--color-primary)] hover:opacity-90 transition"
+  >
+    <Mail className="h-4 w-4" />
+    {contact.email}
+  </a>
+
+  {/* WhatsApp */}
+  <a
+    href={contact.whatsapp}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center gap-2 text-sm font-medium text-[var(--color-primary)] hover:opacity-90 transition"
+  >
+    <MessageCircle className="h-4 w-4" />
+    WhatsApp Chat
+  </a>
+
+  {/* Instagram */}
+  <a
+    href={contact.instagram}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center gap-2 text-sm font-medium text-[var(--color-primary)] hover:opacity-90 transition"
+  >
+    <Instagram className="h-4 w-4" />
+    @aleto
+  </a>
+</div>
+
 
               <div className="pt-3 flex items-start gap-3">
                 <div className="h-10 w-10 rounded-2xl border border-[var(--color-border)] bg-[color:rgba(79,110,247,0.10)] flex items-center justify-center">

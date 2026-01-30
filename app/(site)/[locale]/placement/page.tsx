@@ -213,6 +213,9 @@ export default function PlacementPage({
           </div>
         </Surface>
       </FadeIn>
+<Button href="/placement/msa">Start MSA test</Button>
+<Button href="/placement/levantine" variant="secondary">Start Levantine test</Button>
+<Button href="/placement/egyptian" variant="secondary">Start Egyptian test</Button>
 
       {/* FINAL CTA */}
       <FadeIn delay={0.32}>
