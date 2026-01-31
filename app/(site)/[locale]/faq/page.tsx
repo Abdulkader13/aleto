@@ -70,10 +70,7 @@ const faqs = [
     q: "How do I pay?",
     a: "Currently, payment is handled manually after confirmation (bank transfer, Wise, PayPal). Integrated checkout may be added later.",
   },
-  {
-    q: "What happens after I apply?",
-    a: "You’ll receive a response within 24–48 hours with a recommended format, schedule options, and next steps.",
-  },
+
 ];
 
 export default function FAQPage({
@@ -124,7 +121,7 @@ export default function FAQPage({
               </div>
 
               <p className="mt-5 text-[var(--color-foreground)]/70 leading-relaxed">
-                If you don’t see your question here, apply anyway — we’ll reply
+                If you don’t see your question here, apply or contact us — we’ll reply
                 with the best format and next steps.
               </p>
             </div>
@@ -223,11 +220,7 @@ export default function FAQPage({
             })}
           </div>
 
-          <div className="mt-10 flex flex-col sm:flex-row gap-3">
-            <Button href="/apply" className="w-full sm:w-auto">
-              Apply now <ArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
+
         </Surface>
       </FadeIn>
 
@@ -248,15 +241,7 @@ export default function FAQPage({
           }}
         />
 
-        <div className="mt-4 text-center">
-          <Button
-            href="/programs"
-            variant="secondary"
-            className="px-10 py-4 text-base md:text-lg"
-          >
-            View programs
-          </Button>
-        </div>
+
       </FadeIn>
     </section>
   );

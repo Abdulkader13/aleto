@@ -332,7 +332,9 @@ export default function ApplyPage({
               icon={<ShieldCheck className="h-6 w-6" />}
               title="Placement-first"
               desc="We recommend the right level and format based on your goal — not what’s easiest to sell."
+            
             />
+            
 
             <Surface className="p-8">
               <p className="font-semibold">Good to know</p>

@@ -354,10 +354,10 @@ export default function Home({ params }: { params: { locale: string } }) {
             align="center"
             title={
               <h2 className="text-3xl md:text-4xl font-playfair font-bold">
-                Results that sound like real Arabic
+                Our students' reviews
               </h2>
             }
-            subtitle="!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            subtitle="From all over the world"
           />
 
           <div className="grid gap-6 md:grid-cols-3">
